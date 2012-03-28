@@ -1,0 +1,17 @@
+/*****************************************************
+Name:transfer.h
+Author:huaixuzhi
+Description:definition of transfer_link structures
+Version:
+Function List:
+    @
+History:
+    <author>    <time>  <version>   <desc>
+ ****************************************************/
+
+#ifndef	_TRANSFER_H_
+#define	_TRANSFER_H_
+
+guint VodOpenSearchList(struct _cmu_data_tag  *data,struct mduSrvTag *srv);
+guint VodCloseSearchList(struct _cmu_data_tag  *data,struct mduSrvTag   *srv);
+#endif

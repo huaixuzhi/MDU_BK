@@ -1,0 +1,99 @@
+/****************************************************
+Name:mdulist.h
+Author:huaixuzhi
+Description:definition of transfer_link structures
+Version:
+Function List:
+    @
+History:
+    <author>    <time>  <version>   <desc>
+ ****************************************************/
+
+#ifndef	_MDU_LIST_H_
+#define	_MDU_LIST_H
+#include <string.h>
+
+/*size of table space;allocate for structure*/
+#define	MAX_CALLS	1024
+#define	DEL_SUCCESS	0
+#define DEL_FALSE	1
+
+#pragma	pack (1)			//Type of alignment is 1 byte
+//
+// in the process of the transger streaming
+// one stream can be uniquely determined acconding to the following
+//
+typedef	struct	_stream_key
+{
+	guint	mPuId;		//device id CMU distribute
+	guchar	mChannelId;		//Channel id
+	guchar	mStreamType;	//main/sub	stream
+	guchar	mMediaType;		//media	type
+}STREAMKEY;
+//
+//CSG-->MDU	media data head
+//receiving data from CSG:data head + rtp
+//
+struct	_media_data_head
+{
+	guchar	Magic[2];	//magic code always = cddc
+	guint	PuId;		//device id
+	guchar	ChannelId;	//channel	id
+	guchar	StreamType;	//main/sub	stream
+	guchar	MediaType;	//mediatype
+	gushort	Length;		//rtp packet length
+	gchar	Resrv[1];
+};
+
+//transfer table entry
+//create instance base on stream
+//relationship of CUs and PUs
+struct	_mdutransferentry
+{
+	STREAMKEY	mStreamKey;		//Uniquely identify a stream
+	gint		mStatus;		//judge a stream on/off
+//	ACTIVESOCK	asock[128];		//Key of socket about CU
+	GList*		mCUList;		//List of CU
+};
+//
+//List of CU
+//
+typedef	struct	_CU_Link
+{
+	gint		mCUId;					//uniquely ID from CMU
+	gchar		CURemoteAddr[16];		//address of target
+	gshort		CURemotePort;			//Port of target
+	gboolean	mFirstRecvCU;			//Have Gotten the CUID or not
+	guint		mLastActiveTime;		//active time
+	gint		CURefCnt;				//reference count
+}CU_LINK;
+
+/********************************************************/
+
+//
+//stream transfer relationship table
+//built --to add or update stream
+//destory --to delete stream
+struct	_mdutransferentry	m_TransferTable[MAX_CALLS];
+
+//
+//CU list
+//built is to add or update stream
+//destory is to delete stream
+struct _CU_Link		m_CU_Link[MAX_CALLS];
+
+//
+//transfer,to operate m_transferTable
+//
+GList *m_pTransferList;
+//
+//CU,to operate m_CU_Link
+//
+GList *m_pCUList;
+
+//
+gint MDU_addTransfer(void *key,void *CU_Link);
+
+gint removeTransfer(void *key,void *CU_Link);
+#pragma	pack ()			//Type of alignment is 1 byte
+#endif

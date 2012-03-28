@@ -1,0 +1,15 @@
+
+[conf_of_mdu]
+Name=Foundations of MDU Development
+localid=-1
+mduip=127.0.0.1
+cmdport=6000
+rtpport=6001
+rtpdevport=6002
+csgmsgport=6003
+loglevel=3
+
+[conf_of_cmu]
+name=info of CMU
+cmuip=127.0.0.1
+cmuport=9998

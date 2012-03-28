@@ -1,0 +1,34 @@
+/********************************************
+Name:mduagent.h
+Author:huaixuzhi
+Description:
+Function List:
+    #
+History:
+    <author>    <time>  <version>   <desc>
+*********************************************/
+
+#ifndef	_MDU_AGENGT_H_
+#define	_MDU_AGENGT_H_
+/*
+ Description:structure of MDU configuration
+ @include:ID,IP,three ports.
+ @if need ,can be added
+*/
+typedef struct _MDU_conf{
+        guint mduLocalID;		//unique ID of MDU;get from CMU;Default value is 0
+        gchar *MDUIP;	//MDU IP address,Default in configure
+        gchar *CMUIP;    //cmuIP and port r used for registe and heart
+        guint cmuPort;
+        guint cmdPort;		//Default port to get cmu command
+        guint RTPPort;		//Default port to communicate with cu
+        guint RTPDEVPort;	//Default port to communicate with csg
+		guint CSGMSGPort;	//Default port to transmit message with csg
+        gchar *Description;	//Description of information
+}MDU_conf;
+
+/*parse the configueration of MDU;need the path of configueration file and
+return a key to use*/
+GKeyFile	*top_MDU_parser(char *buf);
+
+#endif
